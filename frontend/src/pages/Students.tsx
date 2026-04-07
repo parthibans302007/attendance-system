@@ -6,6 +6,7 @@ import { Search, Filter, Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 const Students = () => {
   const [students, setStudents] = useState<any[]>([]);
@@ -48,10 +49,11 @@ const Students = () => {
       await api.post("/students", newStudent);
       setIsModalOpen(false);
       setNewStudent({ name: "", email: "", rollNumber: "", category: "", contactNumber: "", parentContact: "" });
+      toast.success("Student correctly added to database!");
       fetchStudents(); // live refresh
     } catch (error: any) {
       console.error("Failed to add student", error);
-      alert(error.response?.data?.message || "Failed to add student");
+      toast.error(error.response?.data?.message || "Failed to add student");
     } finally {
       setIsSubmitting(false);
     }
